@@ -53,10 +53,7 @@ namespace SixPack.Consumers
                 }
             }
 
-            _errors.Append(_result.ToString());
-            string _finalResult = _errors.ToString();
-
-            return _finalResult;
+            return _errors.Append(_result.ToString()).ToString();
         }
 
         public virtual async Task<IAsset> GetScriptAsync(IAsset asset)
@@ -76,19 +73,13 @@ namespace SixPack.Consumers
                     }
                     else
                     {
+                        // TODO: Move text to locale
                         throw new Exception("StatusCode did not indicate success (" + _response.StatusCode + ")");
                     }
                 }
                 catch (Exception e)
                 {
-                    StringBuilder _strBuilder = new StringBuilder();
-                    _strBuilder.AppendLine("/* Error loading path: " + asset.Url + ".  " + e.Message + " */");
-                    _strBuilder.AppendLine();
-
-                    asset.Status = AssetStatus.NotFound;
-                    asset.ErrorContent = _strBuilder.ToString();
-
-                    return asset;
+                    return AddErrorContent(asset, e);
                 }
             }
         }
@@ -109,14 +100,7 @@ namespace SixPack.Consumers
                 }
                 catch (Exception e)
                 {
-                    StringBuilder _strBuilder = new StringBuilder();
-                    _strBuilder.AppendLine("/* Error loading path: " + asset.Url + ".  " + e.Message + " */");
-                    _strBuilder.AppendLine();
-
-                    asset.Status = AssetStatus.NotFound;
-                    asset.ErrorContent = _strBuilder.ToString();
-
-                    return asset;
+                    return AddErrorContent(asset, e);
                 }
             }
         }
@@ -125,7 +109,6 @@ namespace SixPack.Consumers
         {
             var _str = new StringBuilder();
             _str.AppendLine();
-            //_str.AppendLine("/* Error minifying path: " + path + " */");
             _str.AppendLine("/* " + errorMsg + " */");
             _str.AppendLine();
             _str.Append(asset.Content);
@@ -133,6 +116,25 @@ namespace SixPack.Consumers
             asset.Status = AssetStatus.MinificationFailed;
             asset.MinifiedContent = asset.Content;
             asset.ErrorContent = _str.ToString();
+
+            return asset;
+        }
+
+        /// <summary>
+        /// Adds information about the exception that was encountered to the Asset
+        /// </summary>
+        /// <param name="asset"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private IAsset AddErrorContent(IAsset asset, Exception e)
+        {
+            StringBuilder _strBuilder = new StringBuilder();
+            // TODO: Move text to locale
+            _strBuilder.AppendLine("/* Error loading path: " + asset.Url + ".  " + e.Message + " */");
+            _strBuilder.AppendLine();
+
+            asset.Status = AssetStatus.NotFound;
+            asset.ErrorContent = _strBuilder.ToString();
 
             return asset;
         }

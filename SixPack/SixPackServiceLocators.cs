@@ -6,7 +6,7 @@ using SixPack.Minifiers;
 namespace SixPack
 {
     /// <summary>
-    /// Using the Service Locator Pattern, provides the factories that are used to support the IOC features of SixPack.
+    /// Using the Service Locator Pattern, provides the factories that are used to support (lazy) property injection in SixPack.
     /// All Get's in this class should supply a Local Default, if the correlating factory is not defined.
     /// 
     /// See SixPack.Tests.AppStart.cs for examples of how to configure these

@@ -14,6 +14,7 @@ namespace SixPack.Minifiers
         public BundleOnlyMinifier(IConsumer consumer)
         {
             if (consumer == null)
+                // TODO: move this text to locale
                 throw new ArgumentException("The consumer parameter that implements IConsumer is required.", "consumer");
 
             _consumer = consumer;

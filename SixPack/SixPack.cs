@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using SixPack.Assets;
 using SixPack.Cache;
+using SixPack.Consumers;
 using SixPack.Locale;
 using SixPack.Minifiers;
 
@@ -15,6 +16,7 @@ namespace SixPack
         protected static IMinifier _minifier;
         protected static ICacheProvider _cacheProvider;
         protected static ILocale _locale;
+        protected static IConsumer _consumer;
         protected static SixPackServiceLocators _serviceLocators;
 
         public SixPack(ICacheProvider cacheProvider, ILocale locale)
@@ -54,7 +56,11 @@ namespace SixPack
             }
 
             var _assets = await GetMinifiedAssets(FileArrayToAssets(filePathArray));
-            var _result = _serviceLocators.GetConsumerInstance().JoinAssets(_assets);
+
+            if (_consumer == null)
+                _consumer = _serviceLocators.GetConsumerInstance();
+
+            var _result = _consumer.JoinAssets(_assets);
             _cacheProvider.Set<string>(bundleName, _result, group: _cacheGroup);
 
             return _result;

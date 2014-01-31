@@ -20,11 +20,14 @@ namespace SixPack
         public static IDictionary<string, Func<IMinifier>> IMinifierFacotries = new Dictionary<string, Func<IMinifier>> { };
         
         /// <summary>
-        /// Gets an instance of IMinifier
+        /// Gets an instance of IMinifier.  If a minifier with the given name is not found, a local default is returned instead.
         /// </summary>
         /// <returns></returns>
         public IMinifier GetMinifierInstance(string name)
         {
+            if(String.IsNullOrWhiteSpace(name))
+                return new BundleOnlyMinifier(new Consumer());
+
             if (IMinifierFacotries.ContainsKey(name))
                 return IMinifierFacotries[name]();
 

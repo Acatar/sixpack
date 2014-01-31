@@ -20,9 +20,9 @@ namespace SixPack.Minifiers
             _consumer = consumer;
         }
 
-        public async Task<IEnumerable<IAsset>> Minify(IEnumerable<IAsset> assets)
+        public async Task<IEnumerable<Asset>> Minify(IEnumerable<Asset> assets)
         {
-            var _tasks = new HashSet<Task<IAsset>> { };
+            var _tasks = new HashSet<Task<Asset>> { };
 
             foreach (var asset in assets)
             {

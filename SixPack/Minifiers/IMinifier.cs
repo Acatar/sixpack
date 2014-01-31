@@ -10,6 +10,6 @@ namespace SixPack.Minifiers
         /// Minifies a collection of assets (i.e. javascript, css)
         /// <param name="assets">A collection of assets</param>
         /// <returns>The same collection that was passed in the assets parameter, having been processed</returns>
-        Task<IEnumerable<IAsset>> Minify(IEnumerable<IAsset> assets);
+        Task<IEnumerable<Asset>> Minify(IEnumerable<Asset> assets);
     }
 }

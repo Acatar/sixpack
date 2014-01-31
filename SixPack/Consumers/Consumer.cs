@@ -13,7 +13,7 @@ namespace SixPack.Consumers
     public class Consumer : IConsumer
     {
 
-        public virtual async Task<IAsset> GetScriptAsync(IAsset asset)
+        public virtual async Task<Asset> GetScriptAsync(Asset asset)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -41,7 +41,7 @@ namespace SixPack.Consumers
             }
         }
 
-        public virtual IAsset GetScript(IAsset asset)
+        public virtual Asset GetScript(Asset asset)
         {
             using (var client = new WebClient())
             {
@@ -68,7 +68,7 @@ namespace SixPack.Consumers
         /// <param name="asset"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        private IAsset AddErrorContent(IAsset asset, Exception e)
+        private Asset AddErrorContent(Asset asset, Exception e)
         {
             StringBuilder _strBuilder = new StringBuilder();
             // TODO: Move text to locale

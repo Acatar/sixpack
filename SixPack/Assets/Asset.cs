@@ -1,7 +1,7 @@
 ﻿
 namespace SixPack.Assets
 {
-    public class Asset : IAsset
+    public class Asset
     {
         public string Url { get; set; }
         public string Content { get; set; }

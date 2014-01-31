@@ -15,20 +15,6 @@ namespace SixPack
     public class SixPackServiceLocators
     {
         /// <summary>
-        /// Creates an intance of IAsset.
-        /// </summary>
-        public static Func<IAsset> IAssetFactory { protected get; set; }
-        
-        /// <summary>
-        /// Gets and instance of IAsset.
-        /// </summary>
-        /// <returns></returns>
-        public IAsset GetAssetInstance() 
-        {
-            return IAssetFactory != null ? IAssetFactory() : new Asset();
-        }
-
-        /// <summary>
         /// A collection of named IMinifier factories
         /// </summary>
         public static IDictionary<string, Func<IMinifier>> IMinifierFacotries = new Dictionary<string, Func<IMinifier>> { };
@@ -42,22 +28,7 @@ namespace SixPack
             if (IMinifierFacotries.ContainsKey(name))
                 return IMinifierFacotries[name]();
 
-            return new BundleOnlyMinifier(GetConsumerInstance());
-        }
-
-        /// <summary>
-        /// Creates an Instance of IConsumer.  This is only used for the local default for GetMinifierInstance, 
-        /// so as long as an IMinifierCreationFactory is defined, this does not need to be
-        /// </summary>
-        public static Func<IConsumer> IConsumerFactory { protected get; set; }
-        
-        /// <summary>
-        /// Gets an Instance of IConsumer.  This is only used for the local default for GetMinifierInstance
-        /// </summary>
-        /// <returns></returns>
-        public IConsumer GetConsumerInstance()
-        {
-            return IConsumerFactory != null ? IConsumerFactory() : new Consumer();
+            return new BundleOnlyMinifier(new Consumer());
         }
     }
 }

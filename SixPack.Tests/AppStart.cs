@@ -18,13 +18,11 @@ namespace SixPack.Tests
             var _container = new ServiceContainer();
 
             _container.Register<ISixPack, SixPack>();
-            _container.Register<IAsset, Asset>();
             _container.Register<IConsumer, Consumer>();
             _container.Register<IMinifier, BundleOnlyMinifier>();
             _container.Register<ILocale, Locale_En>();
             _container.Register<ICacheProvider, MemoryCacheProviderImplementation>();
 
-            SixPackServiceLocators.IAssetFactory = () => _container.GetInstance<IAsset>();
             SixPackServiceLocators.IMinifierFacotries.Add(Constants.JsMinifierName, () => _container.GetInstance<IMinifier>());
             //SixPackServiceLocators.IConsumerCreationFactory = () => _container.GetInstance<IConsumer>();
 

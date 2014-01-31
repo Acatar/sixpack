@@ -11,14 +11,14 @@ namespace SixPack.Consumers
         /// </summary>
         /// <param name="asset">An Asset with at least the Url and SortOrder already set (i.e. http://myapp.com/scripts/main.js) </param>
         /// <returns>IAsset: an asset with content and status information</returns>
-        Task<IAsset> GetScriptAsync(IAsset asset);
+        Task<Asset> GetScriptAsync(Asset asset);
 
         /// <summary>
         /// Gets a script from a web resource, synchronously
         /// </summary>
         /// <param name="asset">An Asset with at least the Url and SortOrder already set (i.e. http://myapp.com/scripts/main.js) </param>
         /// <returns>IAsset: an asset with content and status information</returns>
-        IAsset GetScript(IAsset asset);
+        Asset GetScript(Asset asset);
 
     }
 }

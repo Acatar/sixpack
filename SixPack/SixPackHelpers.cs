@@ -14,7 +14,7 @@ namespace SixPack
         /// </summary>
         /// <param name="assets">A collection of assets that has already gone through the minification process</param>
         /// <returns></returns>
-        public static string JoinAssets(IEnumerable<IAsset> assets)
+        public static string JoinAssets(IEnumerable<Asset> assets)
         {
             var _result = new StringBuilder();
             var _errors = new StringBuilder();
@@ -64,7 +64,7 @@ namespace SixPack
         /// <param name="asset">An Asset with at least the Url and Content already set (i.e. http://myapp.com/scripts/main.js) </param>
         /// <param name="errorMsg"></param>
         /// <returns></returns>
-        public static IAsset GetUnminifiedJsOnError(IAsset asset, string errorMsg)
+        public static Asset GetUnminifiedJsOnError(Asset asset, string errorMsg)
         {
             var _str = new StringBuilder();
             _str.AppendLine();

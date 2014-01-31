@@ -57,17 +57,17 @@ namespace SixPack
             return _result;
         }
 
-        protected virtual IEnumerable<IAsset> FileArrayToAssets(ICollection<string> filePathArray) 
+        protected virtual IEnumerable<Asset> FileArrayToAssets(ICollection<string> filePathArray) 
         {
             int _order = 1;
 
             foreach (var item in filePathArray)
             {
-                var _asset = _serviceLocators.GetAssetInstance();
-                _asset.Url = item;
-                _asset.Status = AssetStatus.NotStarted;
-                _asset.SortOrder = _order;
-                yield return _asset;
+                yield return new Asset { 
+                    Url = item,
+                    Status = AssetStatus.NotStarted,
+                    SortOrder = _order
+                };
 
                 _order++;
             }
@@ -78,7 +78,7 @@ namespace SixPack
         /// </summary>
         /// <param name="path">the path to the web resource (i.e. http://myapp.com/scripts/main.js)</param>
         /// <returns>FileResultVw: the code in a string and a success bool</returns>
-        protected virtual async Task<IEnumerable<IAsset>> GetMinifiedAssets(IEnumerable<IAsset> assets, string minifierFactoryName)
+        protected virtual async Task<IEnumerable<Asset>> GetMinifiedAssets(IEnumerable<Asset> assets, string minifierFactoryName)
         {
             if (_minifier == null)
                 _minifier = _serviceLocators.GetMinifierInstance(minifierFactoryName);

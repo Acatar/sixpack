@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SixPack.Assets;
 using SixPack.Consumers;
 using SixPack.Minifiers;
@@ -13,22 +14,50 @@ namespace SixPack
     /// </summary>
     public class SixPackServiceLocators
     {
-        public static Func<IAsset> IAssetCreationFactory { private get; set; }
+        /// <summary>
+        /// Creates an intance of IAsset.
+        /// </summary>
+        public static Func<IAsset> IAssetFactory { protected get; set; }
+        
+        /// <summary>
+        /// Gets and instance of IAsset.
+        /// </summary>
+        /// <returns></returns>
         public IAsset GetAssetInstance() 
         {
-            return IAssetCreationFactory != null ? IAssetCreationFactory() : new Asset();
+            return IAssetFactory != null ? IAssetFactory() : new Asset();
         }
 
-        public static Func<IMinifier> IMinifierCreationFactory { private get; set; }
-        public IMinifier GetMinifierInstance()
+        /// <summary>
+        /// A collection of named IMinifier factories
+        /// </summary>
+        public static IDictionary<string, Func<IMinifier>> IMinifierFacotries = new Dictionary<string, Func<IMinifier>> { };
+        
+        /// <summary>
+        /// Gets an instance of IMinifier
+        /// </summary>
+        /// <returns></returns>
+        public IMinifier GetMinifierInstance(string name)
         {
-            return IMinifierCreationFactory != null ? IMinifierCreationFactory() : new BundleOnlyMinifier(GetConsumerInstance());
+            if (IMinifierFacotries.ContainsKey(name))
+                return IMinifierFacotries[name]();
+
+            return new BundleOnlyMinifier(GetConsumerInstance());
         }
 
-        public static Func<IConsumer> IConsumerCreationFactory { private get; set; }
+        /// <summary>
+        /// Creates an Instance of IConsumer.  This is only used for the local default for GetMinifierInstance, 
+        /// so as long as an IMinifierCreationFactory is defined, this does not need to be
+        /// </summary>
+        public static Func<IConsumer> IConsumerFactory { protected get; set; }
+        
+        /// <summary>
+        /// Gets an Instance of IConsumer.  This is only used for the local default for GetMinifierInstance
+        /// </summary>
+        /// <returns></returns>
         public IConsumer GetConsumerInstance()
         {
-            return IConsumerCreationFactory != null ? IConsumerCreationFactory() : new Consumer();
+            return IConsumerFactory != null ? IConsumerFactory() : new Consumer();
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SixPack.Tests
         [TestMethod]
         public void GoogleCdnTest()
         {
-            var _bundle = Task.Run<string>(() => _sixpack.GetBundle("testbundle", cdnBundle)).Result;
+            var _bundle = Task.Run<string>(() => _sixpack.GetBundle("testbundle", Constants.JsMinifierName, cdnBundle)).Result;
             Assert.IsFalse(String.IsNullOrWhiteSpace(_bundle));
 
             // second time should come from cache

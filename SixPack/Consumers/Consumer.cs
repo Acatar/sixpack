@@ -12,49 +12,6 @@ namespace SixPack.Consumers
 {
     public class Consumer : IConsumer
     {
-        public string JoinAssets(IEnumerable<IAsset> assets) 
-        {
-            var _result = new StringBuilder();
-            var _errors = new StringBuilder();
-
-            foreach (var asset in assets.OrderBy(a => a.SortOrder)) 
-            {
-                if (!String.IsNullOrWhiteSpace(asset.ErrorContent))
-                {
-                    _errors.Append(asset.ErrorContent);
-                    _errors.AppendLine();
-                }
-
-                switch (asset.Status) 
-                { 
-                    case AssetStatus.MinifiedWithoutComments:
-                        _result.Append(asset.MinifiedContent);
-                        break;
-                    case AssetStatus.MinifiedWithComments:
-                        _result.Append(asset.MinifiedContent);
-                        _result.AppendLine();
-                        break;
-                    case AssetStatus.NotMinified:
-                        _result.Append(asset.Content);
-                        _result.AppendLine();
-                        break;
-                    default:
-                        if (!String.IsNullOrWhiteSpace(asset.MinifiedContent)) 
-                        {
-                            _result.Append(asset.MinifiedContent);
-                            _result.AppendLine();
-                        }
-                        else if (!String.IsNullOrWhiteSpace(asset.Content))
-                        {
-                            _result.Append(asset.Content);
-                            _result.AppendLine();
-                        }
-                        break;
-                }
-            }
-
-            return _errors.Append(_result.ToString()).ToString();
-        }
 
         public virtual async Task<IAsset> GetScriptAsync(IAsset asset)
         {
@@ -103,21 +60,6 @@ namespace SixPack.Consumers
                     return AddErrorContent(asset, e);
                 }
             }
-        }
-
-        public virtual IAsset GetUnminifiedJsOnError(IAsset asset, string errorMsg)
-        {
-            var _str = new StringBuilder();
-            _str.AppendLine();
-            _str.AppendLine("/* " + errorMsg + " */");
-            _str.AppendLine();
-            _str.Append(asset.Content);
-
-            asset.Status = AssetStatus.MinificationFailed;
-            asset.MinifiedContent = asset.Content;
-            asset.ErrorContent = _str.ToString();
-
-            return asset;
         }
 
         /// <summary>

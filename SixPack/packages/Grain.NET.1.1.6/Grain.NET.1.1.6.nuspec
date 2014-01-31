@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Grain.NET</id>
+    <version>1.1.6</version>
+    <title>Grain.NET</title>
+    <authors>Andy Wright</authors>
+    <owners>Andy Wright</owners>
+    <licenseUrl>http://opensource.org/licenses/apache2.0.php</licenseUrl>
+    <projectUrl>https://github.com/losandes/Grain.NET</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Grain is a framework extension library for .NET.  It includes, among other features, XML, JSON and Binary serialization, String, IEnumerable, List, Dictionary and Enum extensions, and config file happiness.</description>
+    <releaseNotes>Removes Grain.Labs and Grain.Encryption, which will have their own nuget packages.</releaseNotes>
+    <tags>.net framework serialization</tags>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="5.0.3" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Configuration" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Data.Entity.Design" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Web" targetFramework="" />
+      <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>

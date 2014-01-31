@@ -16,7 +16,6 @@ namespace SixPack
         protected static IMinifier _minifier;
         protected static ICacheProvider _cacheProvider;
         protected static ILocale _locale;
-        protected static IConsumer _consumer;
         protected static SixPackServiceLocators _serviceLocators;
 
         public SixPack(ICacheProvider cacheProvider, ILocale locale)
@@ -33,12 +32,7 @@ namespace SixPack
             _serviceLocators = new SixPackServiceLocators();
         }
 
-        public string CreateBundle(string bundleName, ICollection<string> filePathArray)
-        {
-            return Task.Run<string>(() => GetBundle(bundleName, filePathArray)).Result;
-        }
-
-        public async Task<string> GetBundle(string bundleName, ICollection<string> filePathArray = null)
+        public async Task<string> GetBundle(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null)
         {
             if (String.IsNullOrWhiteSpace(bundleName))
             {
@@ -55,12 +49,9 @@ namespace SixPack
                 return "/* No files were found to bundle for " + bundleName + ". */";
             }
 
-            var _assets = await GetMinifiedAssets(FileArrayToAssets(filePathArray));
+            var _assets = await GetMinifiedAssets(FileArrayToAssets(filePathArray), iMinifierFactoryName);
 
-            if (_consumer == null)
-                _consumer = _serviceLocators.GetConsumerInstance();
-
-            var _result = _consumer.JoinAssets(_assets);
+            var _result = SixPackHelpers.JoinAssets(_assets);
             _cacheProvider.Set<string>(bundleName, _result, group: _cacheGroup);
 
             return _result;
@@ -87,10 +78,10 @@ namespace SixPack
         /// </summary>
         /// <param name="path">the path to the web resource (i.e. http://myapp.com/scripts/main.js)</param>
         /// <returns>FileResultVw: the code in a string and a success bool</returns>
-        protected virtual async Task<IEnumerable<IAsset>> GetMinifiedAssets(IEnumerable<IAsset> assets)
+        protected virtual async Task<IEnumerable<IAsset>> GetMinifiedAssets(IEnumerable<IAsset> assets, string minifierFactoryName)
         {
             if (_minifier == null)
-                _minifier = _serviceLocators.GetMinifierInstance();
+                _minifier = _serviceLocators.GetMinifierInstance(minifierFactoryName);
 
             return await _minifier.Minify(assets);
         }

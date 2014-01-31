@@ -24,11 +24,14 @@ namespace SixPack.Tests
             _container.Register<ILocale, Locale_En>();
             _container.Register<ICacheProvider, MemoryCacheProviderImplementation>();
 
-            SixPackServiceLocators.IAssetCreationFactory = () => _container.GetInstance<IAsset>();
-            SixPackServiceLocators.IMinifierCreationFactory = () => _container.GetInstance<IMinifier>();
-            SixPackServiceLocators.IConsumerCreationFactory = () => _container.GetInstance<IConsumer>();
+            SixPackServiceLocators.IAssetFactory = () => _container.GetInstance<IAsset>();
+            SixPackServiceLocators.IMinifierFacotries.Add(Constants.JsMinifierName, () => _container.GetInstance<IMinifier>());
+            //SixPackServiceLocators.IConsumerCreationFactory = () => _container.GetInstance<IConsumer>();
 
             _BaseTest._sixpack = _container.GetInstance<ISixPack>();
+            
+            //alternatively:
+            //_BaseTest._sixpack = new SixPack(new MemoryCacheProviderImplementation(), new Locale_En());
         }
     }
 }

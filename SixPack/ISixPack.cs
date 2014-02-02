@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SixPack.Assets;
 
 namespace SixPack
 {
@@ -16,8 +17,9 @@ namespace SixPack
         /// </summary>
         /// <param name="bundleName"></param>
         /// <param name="iMinifierFactoryName">The name of the IMinifier factory that is stored in SixPackServiceLocators.IMinifierCreationFacotries</param>
-        /// <param name="filePathArray">HashSet of type string: a list of HTTP paths to the files you wish to bundle</param>
+        /// <param name="filePathArray"></param>
+        /// <param name="useCache"></param>
         /// <returns>string: the assets, minified and joined into a single string</returns>
-        Task<string> GetBundle(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null);
+        Task<Bundle> GetBundleContent(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null, bool useCache = true);
     }
 }

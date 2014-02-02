@@ -23,7 +23,7 @@ namespace SixPack.Tests
             _container.Register<ILocale, Locale_En>();
             _container.Register<ICacheProvider, MemoryCacheProviderImplementation>();
 
-            SixPackServiceLocators.IMinifierFacotries.Add(Constants.JsMinifierName, () => _container.GetInstance<IMinifier>());
+            SixPackServiceLocators.IMinifierFactories.Add(Constants.JsMinifierName, () => _container.GetInstance<IMinifier>());
             //SixPackServiceLocators.IConsumerCreationFactory = () => _container.GetInstance<IConsumer>();
 
             _BaseTest._sixpack = _container.GetInstance<ISixPack>();

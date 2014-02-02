@@ -29,32 +29,41 @@ namespace SixPack
                 throw new ArgumentException(locale.CacheProviderNotImplemented, "cacheProvider");
 
             _cacheProvider = cacheProvider;
-            _serviceLocators = new SixPackServiceLocators();
         }
 
-        public async Task<string> GetBundle(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null)
+        public async Task<Bundle> GetBundleContent(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null, bool useCache = true)
         {
             if (String.IsNullOrWhiteSpace(bundleName))
-            {
-                throw new NullReferenceException("Bundles have to be named. The bundleName parameter cannot be null or empty.");
-            }
+                throw new ArgumentException("Bundles have to be named. The bundleName parameter cannot be null or empty.", "bundle.Name");
 
-            if (_cacheProvider.Exists(bundleName, group: _cacheGroup))
-            {
-                return _cacheProvider.Get<string>(bundleName, group: _cacheGroup);
-            }
+            if (useCache && _cacheProvider.Exists(bundleName, group: _cacheGroup))
+                return _cacheProvider.Get<Bundle>(bundleName, group: _cacheGroup);
 
             if (filePathArray == null || !filePathArray.Any())
-            {
-                return "/* No files were found to bundle for " + bundleName + ". */";
-            }
+                return new Bundle { Name = bundleName, Content = "/* No files were found to bundle for " + bundleName + ". */" };
+
+            var _firstFile = filePathArray.FirstOrDefault();
+            string _contentExtension = _firstFile.Contains('.') ? _firstFile.Substring(_firstFile.LastIndexOf('.') + 1) : null;
+
+            if (String.IsNullOrWhiteSpace(iMinifierFactoryName) && String.IsNullOrWhiteSpace(_contentExtension))
+                throw new ArgumentException("iMinifierFactoryName must be defined", "iMinifierFactoryName");
+            
+            if (String.IsNullOrWhiteSpace(iMinifierFactoryName))
+                iMinifierFactoryName = _contentExtension;
 
             var _assets = await GetMinifiedAssets(FileArrayToAssets(filePathArray), iMinifierFactoryName);
 
-            var _result = SixPackHelpers.JoinAssets(_assets);
-            _cacheProvider.Set<string>(bundleName, _result, group: _cacheGroup);
+            var _bundle = new Bundle { 
+                Name = bundleName,
+                Content = SixPackHelpers.JoinAssets(_assets),
+                ContentExtension = _contentExtension,
+                FilePathArray = filePathArray
+            };
 
-            return _result;
+            if (useCache)
+                _cacheProvider.Set<Bundle>(_bundle.Name, _bundle, group: _cacheGroup);
+
+            return _bundle;
         }
 
         protected virtual IEnumerable<Asset> FileArrayToAssets(ICollection<string> filePathArray) 
@@ -80,6 +89,12 @@ namespace SixPack
         /// <returns>FileResultVw: the code in a string and a success bool</returns>
         protected virtual async Task<IEnumerable<Asset>> GetMinifiedAssets(IEnumerable<Asset> assets, string minifierFactoryName)
         {
+            if(_serviceLocators == null)
+                _serviceLocators = new SixPackServiceLocators();
+
+            if (!_serviceLocators.MinifierFactoryExists(minifierFactoryName))
+                throw new NullReferenceException(String.Format("A minifier factory with the name, {0}, does not exist in SixPackServiceLocators.IMinifierFactories.", minifierFactoryName));
+
             if (_minifier == null)
                 _minifier = _serviceLocators.GetMinifierInstance(minifierFactoryName);
 

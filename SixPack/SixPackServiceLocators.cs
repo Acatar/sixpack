@@ -17,7 +17,7 @@ namespace SixPack
         /// <summary>
         /// A collection of named IMinifier factories
         /// </summary>
-        public static IDictionary<string, Func<IMinifier>> IMinifierFacotries = new Dictionary<string, Func<IMinifier>> { };
+        public static IDictionary<string, Func<IMinifier>> IMinifierFactories = new Dictionary<string, Func<IMinifier>> { };
         
         /// <summary>
         /// Gets an instance of IMinifier.  If a minifier with the given name is not found, a local default is returned instead.
@@ -28,10 +28,20 @@ namespace SixPack
             if(String.IsNullOrWhiteSpace(name))
                 return new BundleOnlyMinifier(new Consumer());
 
-            if (IMinifierFacotries.ContainsKey(name))
-                return IMinifierFacotries[name]();
+            if (IMinifierFactories.ContainsKey(name))
+                return IMinifierFactories[name]();
 
             return new BundleOnlyMinifier(new Consumer());
+        }
+
+        /// <summary>
+        /// Check to see if a factory with a given name exists in the IMinifierFactories dictionary
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool MinifierFactoryExists(string name) 
+        {
+            return IMinifierFactories.ContainsKey(name);
         }
     }
 }

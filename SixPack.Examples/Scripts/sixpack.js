@@ -1,6 +1,6 @@
 ﻿var sixpack = (function () {
     var $this = {},
-        loaded = [];
+        bundles = [];
 
     $this.config = {
         context: null,
@@ -12,12 +12,21 @@
         async: false
     };
 
+    var bundleVw = function (data) {
+        var _self = {};
+        _self.name = data.name;
+        _self.context = data.context;
+        //_self.paths = data.paths; // for require
+
+        return _self;
+    }
+
     $this.defineBundle = function (name, filePathArray, callback)
     {
         var _context = $this.config.context != null ? $this.config.context : '_';
 
-        for (var i in loaded) {     // don't allow the bundle to be loaded more than once per context on a page
-            var _lod = loaded[i];
+        for (var i in bundles) {     // don't allow the bundle to be loaded more than once per context on a page
+            var _lod = bundles[i];
             if (_lod.name == name && _lod.context == _context)
                 return;
         }
@@ -38,7 +47,7 @@
             _url += $this.config.urlArgs.substring(0, 1) == '&' ? $this.config.urlArgs : '&' + $this.config.urlArgs;
         
         appendDom(_url, _context, name);
-        loaded.push({ context: _context, name: name });
+        bundles.push(new bundleVw({ context: _context, name: name }));
         // TODO: return something that can be used
     }
 
@@ -54,7 +63,7 @@
         for (var i in _filePathArray) {
             appendDom(_filePathArray[i], context, name);
         }
-        loaded.push({ context: _context, name: name });
+        bundles.push(new bundleVw({ context: context, name: name }));
         // TODO: return something that can be used
     }
 

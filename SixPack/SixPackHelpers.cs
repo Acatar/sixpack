@@ -78,14 +78,5 @@ namespace SixPack
 
             return asset;
         }
-
-        public static Dictionary<string, string> MimeTypes = new Dictionary<string, string> { 
-            {"js", "application/javascript"},
-            {"css", "text/css"},
-            {"less", "text/css"},
-            {"sass", "text/css"}
-            // TODO: flesh this out more
-        };
-
     }
 }

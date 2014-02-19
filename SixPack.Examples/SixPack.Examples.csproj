@@ -77,6 +77,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\sixpack.js\sixpack.js">
+      <Link>Scripts\sixpack.js</Link>
+    </Content>
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
     <Content Include="Scripts\home.js" />
@@ -85,7 +88,6 @@
     <Content Include="Scripts\r.js" />
     <Content Include="Scripts\require.js" />
     <Content Include="Scripts\require.shim.js" />
-    <Content Include="Scripts\sixpack.js" />
     <Content Include="Views\Home\home.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-2.1.0.min.map" />
@@ -106,6 +108,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SixPack.Cache\SixPack.Cache.csproj">
+      <Project>{9eac7afb-2e1a-403b-910c-092f344ff5ca}</Project>
+      <Name>SixPack.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SixPack.MemoryCache\SixPack.MemoryCacheProvider.csproj">
       <Project>{1781ba63-0fbd-47f3-8788-a9a730b2b1f1}</Project>
       <Name>SixPack.MemoryCacheProvider</Name>
@@ -114,11 +120,11 @@
       <Project>{1a4ed634-ceb3-4353-a508-40c2ca679cd1}</Project>
       <Name>SixPack</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SixPack\SixPack.HttpHandlers\SixPack.HttpHandlers.csproj">
+    <ProjectReference Include="..\SixPack.HttpHandlers\SixPack.HttpHandlers.csproj">
       <Project>{6c0b5a37-7071-416c-b74d-37d86f854cb6}</Project>
       <Name>SixPack.HttpHandlers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SixPack\SixPack.NancyExtensions\SixPack.NancyExtensions.csproj">
+    <ProjectReference Include="..\SixPack.NancyExtensions\SixPack.NancyExtensions.csproj">
       <Project>{a1abe52b-8746-43a9-ba5a-9200230ad08f}</Project>
       <Name>SixPack.NancyExtensions</Name>
     </ProjectReference>
@@ -157,4 +163,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
+    <Copy SourceFiles="%(Content.Identity)" DestinationFiles="%(Content.Link)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" Condition="'%(Content.Link)' != ''" />
+  </Target>
 </Project>

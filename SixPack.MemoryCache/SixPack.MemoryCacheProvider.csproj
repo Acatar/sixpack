@@ -31,22 +31,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MemoryCacheProviderImplementation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SixPack\SixPack.csproj">
-      <Project>{1a4ed634-ceb3-4353-a508-40c2ca679cd1}</Project>
-      <Name>SixPack</Name>
+    <ProjectReference Include="..\SixPack.Cache\SixPack.Cache.csproj">
+      <Project>{9eac7afb-2e1a-403b-910c-092f344ff5ca}</Project>
+      <Name>SixPack.Cache</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

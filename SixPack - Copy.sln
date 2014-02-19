@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack", "SixPack.csproj", "{1A4ED634-CEB3-4353-A508-40C2CA679CD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack", "SixPack\SixPack.csproj", "{1A4ED634-CEB3-4353-A508-40C2CA679CD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.Tests", "..\SixPack.Tests\SixPack.Tests.csproj", "{5111AF76-7C56-422D-B06B-BCBD0FEA492B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.Tests", "SixPack.Tests\SixPack.Tests.csproj", "{5111AF76-7C56-422D-B06B-BCBD0FEA492B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.MemoryCacheProvider", "..\SixPack.MemoryCache\SixPack.MemoryCacheProvider.csproj", "{1781BA63-0FBD-47F3-8788-A9A730B2B1F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.MemoryCacheProvider", "SixPack.MemoryCache\SixPack.MemoryCacheProvider.csproj", "{1781BA63-0FBD-47F3-8788-A9A730B2B1F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.HttpHandlers", "SixPack.HttpHandlers\SixPack.HttpHandlers.csproj", "{6C0B5A37-7071-416C-B74D-37D86F854CB6}"
 EndProject
@@ -16,9 +16,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CB6A01
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.Examples", "..\SixPack.Examples\SixPack.Examples.csproj", "{874FFB01-AD4B-4C2F-9128-51646A64F7E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.Examples", "SixPack.Examples\SixPack.Examples.csproj", "{874FFB01-AD4B-4C2F-9128-51646A64F7E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.NancyExtensions", "SixPack.NancyExtensions\SixPack.NancyExtensions.csproj", "{A1ABE52B-8746-43A9-BA5A-9200230AD08F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixPack.Cache", "SixPack.Cache\SixPack.Cache.csproj", "{9EAC7AFB-2E1A-403B-910C-092F344FF5CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sixpack.js", "sixpack.js", "{BE8D78F8-F9D1-4395-AB62-C582FFED6325}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\dev\Branches\SinglePage2\Spa\Scripts\sixpack\sixpack.js = ..\..\..\dev\Branches\SinglePage2\Spa\Scripts\sixpack\sixpack.js
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +57,10 @@ Global
 		{A1ABE52B-8746-43A9-BA5A-9200230AD08F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1ABE52B-8746-43A9-BA5A-9200230AD08F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1ABE52B-8746-43A9-BA5A-9200230AD08F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EAC7AFB-2E1A-403B-910C-092F344FF5CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAC7AFB-2E1A-403B-910C-092F344FF5CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAC7AFB-2E1A-403B-910C-092F344FF5CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAC7AFB-2E1A-403B-910C-092F344FF5CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

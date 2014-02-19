@@ -65,6 +65,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SixPack.Cache\SixPack.Cache.csproj">
+      <Project>{9eac7afb-2e1a-403b-910c-092f344ff5ca}</Project>
+      <Name>SixPack.Cache</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SixPack.MemoryCache\SixPack.MemoryCacheProvider.csproj">
       <Project>{1781ba63-0fbd-47f3-8788-a9a730b2b1f1}</Project>
       <Name>SixPack.MemoryCacheProvider</Name>

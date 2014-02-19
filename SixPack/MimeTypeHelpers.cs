@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SixPack
 {
-    public static class MimeTypes
+    public static class MimeTypeHelpers
     {
         const string _defaultMimeType = "application/octet-stream";
 

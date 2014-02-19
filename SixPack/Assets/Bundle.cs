@@ -37,7 +37,7 @@ namespace SixPack.Assets
             {
                 if (!String.IsNullOrWhiteSpace(this._mimeType))
                     return this._mimeType;
-                return MimeTypes.GetMimeType(this.ContentExtension);
+                return MimeTypeHelpers.GetMimeType(this.ContentExtension);
             }
             set 
             {

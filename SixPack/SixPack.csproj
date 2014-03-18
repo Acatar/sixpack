@@ -39,6 +39,7 @@
     <Compile Include="Assets\Asset.cs" />
     <Compile Include="Assets\AssetStatus.cs" />
     <Compile Include="Assets\Bundle.cs" />
+    <Compile Include="Assets\LastModified.cs" />
     <Compile Include="Consumers\IConsumer.cs" />
     <Compile Include="ISixPack.cs" />
     <Compile Include="Locale\ILocale.cs" />

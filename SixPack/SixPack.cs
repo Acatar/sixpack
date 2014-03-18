@@ -12,7 +12,6 @@ namespace SixPack
 {
     public class SixPack : ISixPack
     {
-        protected static string _cacheGroup = "sixpack::";
         protected static IMinifier _minifier;
         protected static ICacheProvider _cacheProvider;
         protected static ILocale _locale;
@@ -36,8 +35,10 @@ namespace SixPack
             if (String.IsNullOrWhiteSpace(bundleName))
                 throw new ArgumentException("Bundles have to be named. The bundleName parameter cannot be null or empty.", "bundle.Name");
 
-            if (useCache && _cacheProvider.Exists(bundleName, group: _cacheGroup))
-                return _cacheProvider.Get<Bundle>(bundleName, group: _cacheGroup);
+            string _bundleCacheKey = GetBundleCacheKey(bundleName);
+
+            if (useCache && _cacheProvider.Exists(_bundleCacheKey))
+                return _cacheProvider.Get<Bundle>(_bundleCacheKey);
 
             if (filePathArray == null || !filePathArray.Any())
                 return new Bundle { Name = bundleName, Content = "/* No files were found to bundle for " + bundleName + ". */" };
@@ -60,10 +61,40 @@ namespace SixPack
                 FilePathArray = filePathArray
             };
 
-            if (useCache)
-                _cacheProvider.Set<Bundle>(_bundle.Name, _bundle, group: _cacheGroup);
+            if (useCache) 
+            {
+                _cacheProvider.Set<Bundle>(_bundleCacheKey, _bundle);
+                _cacheProvider.Set<LastModified>(GetLastModifiedCacheKey(_bundle.Name), new LastModified 
+                    { 
+                        BundleName = _bundle.Name,
+                        TimeUtcLastModified = DateTime.UtcNow
+                    });
+            }
 
             return _bundle;
+        }
+
+        /// <summary>
+        /// Get the time that the bundle was cached (the last modified time) in an async call
+        /// </summary>
+        /// <param name="bundleName">the name of the bundle to check the last modified time for</param>
+        /// <returns>The UTC Time that the bundle was cached, if it is found, otherwise UTCNow</returns>
+        public async Task<DateTime> GetLastModifiedTimeAsync(string bundleName)
+        {
+            return await Task.Run<DateTime>(() => GetLastModifiedTime(bundleName));
+        }
+
+        /// <summary>
+        /// Get the time that the bundle was cached (the last modified time).
+        /// </summary>
+        /// <param name="bundleName">the name of the bundle to check the last modified time for</param>
+        /// <returns>The UTC Time that the bundle was cached, if it is found, otherwise UTCNow</returns>
+        public DateTime GetLastModifiedTime(string bundleName) 
+        {
+            var _cacheKey = GetLastModifiedCacheKey(bundleName);
+            var _result = _cacheProvider.Get<LastModified>(_cacheKey);
+
+            return _result != null ? _result.TimeUtcLastModified : DateTime.UtcNow;
         }
 
         protected virtual IEnumerable<Asset> FileArrayToAssets(ICollection<string> filePathArray) 
@@ -99,6 +130,26 @@ namespace SixPack
                 _minifier = _serviceLocators.GetMinifierInstance(minifierFactoryName);
 
             return await _minifier.Minify(assets);
+        }
+
+        /// <summary>
+        /// Gets the cache key for the bundle
+        /// </summary>
+        /// <param name="bundleName"></param>
+        /// <returns></returns>
+        protected static string GetBundleCacheKey(string bundleName)
+        {
+            return String.Format("sixpack::{0}", bundleName);
+        }
+
+        /// <summary>
+        /// Gets the cache key for the bundle's last modified time
+        /// </summary>
+        /// <param name="bundleName"></param>
+        /// <returns></returns>
+        protected static string GetLastModifiedCacheKey(string bundleName)
+        {
+            return String.Format("sixpack::{0}::last_modified", bundleName);
         }
     }
 }

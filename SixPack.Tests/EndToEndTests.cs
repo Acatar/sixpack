@@ -23,10 +23,18 @@ namespace SixPack.Tests
         [TestMethod]
         public void GoogleCdnTest()
         {
-            var _bundle = Task.Run<Bundle>(() => 
-                _sixpack.GetBundleContent("unittests::bundles::googleCdnTest", Constants.JsMinifierName, cdnBundle));
+            string _bundleName = "unittests::bundles::googleCdnTest";
+
+            var _bundle = Task.Run<Bundle>(() =>
+                _sixpack.GetBundleContent(_bundleName, Constants.JsMinifierName, cdnBundle));
             var _result = _bundle.Result;
             Assert.IsFalse(String.IsNullOrWhiteSpace(_result.Content));
+
+            var _lastModified = Task.Run<DateTime>(() =>
+                _sixpack.GetLastModifiedTimeAsync(_bundleName));
+            var _lastModifiedResult = _lastModified.Result;
+            Assert.IsTrue(_lastModifiedResult >= DateTime.UtcNow.AddMinutes(-1));
+            Assert.IsTrue(_lastModifiedResult <= DateTime.UtcNow);
 
             // second time should come from cache
             //_bundle = Task.Run<string>(() => _sixpack.GetBundle("testbundle", cdnBundle)).Result;

@@ -21,5 +21,19 @@ namespace SixPack
         /// <param name="useCache"></param>
         /// <returns>string: the assets, minified and joined into a single string</returns>
         Task<Bundle> GetBundleContent(string bundleName, string iMinifierFactoryName, ICollection<string> filePathArray = null, bool useCache = true);
+
+        /// <summary>
+        /// Get the time that the bundle was cached (the last modified time) in an async call
+        /// </summary>
+        /// <param name="bundleName">the name of the bundle to check the last modified time for</param>
+        /// <returns>The UTC Time that the bundle was cached, if it is found, otherwise UTCNow</returns>
+        Task<DateTime> GetLastModifiedTimeAsync(string bundleName);
+
+        /// <summary>
+        /// Get the time that the bundle was cached (the last modified time).
+        /// </summary>
+        /// <param name="bundleName">the name of the bundle to check the last modified time for</param>
+        /// <returns>The UTC Time that the bundle was cached, if it is found, otherwise UTCNow</returns>
+        DateTime GetLastModifiedTime(string bundleName);
     }
 }

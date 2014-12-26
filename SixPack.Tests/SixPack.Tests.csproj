@@ -73,6 +73,10 @@
       <Project>{1781ba63-0fbd-47f3-8788-a9a730b2b1f1}</Project>
       <Name>SixPack.MemoryCacheProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SixPack.Minifiers.BetterMinifyJS\SixPack.Minifiers.BetterMinifyJS.csproj">
+      <Project>{0a027dfb-864e-4e12-958a-176c1329cc4e}</Project>
+      <Name>SixPack.Minifiers.BetterMinifyJS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SixPack\SixPack.csproj">
       <Project>{1a4ed634-ceb3-4353-a508-40c2ca679cd1}</Project>
       <Name>SixPack</Name>

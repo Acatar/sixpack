@@ -26,12 +26,31 @@ namespace SixPack.Minifiers.BetterMinifyJS
         {
             var _tasks = new HashSet<Task<Asset>> { };
 
-            foreach (var asset in assets)
+            foreach (var _asset in assets)
             {
-                _tasks.Add(_consumer.GetScriptAsync(asset));
+                _tasks.Add(_consumer.GetScriptAsync(_asset));
             }
 
-            return await Task.WhenAll(_tasks.ToArray());
+            Asset[] _loadedAssets =  await Task.WhenAll(_tasks.ToArray());
+
+            foreach(var _asset in _loadedAssets)
+            {
+                if (_asset.Status == AssetStatus.NotMinified)
+                {
+                    try
+                    {
+                        _asset.MinifiedContent = Process(_asset.Content);
+                        _asset.Status = AssetStatus.MinifiedWithComments;
+                    }
+                    catch (Exception ex)
+                    {
+                        _asset.MinifiedContent = null;
+                        _asset.Status = AssetStatus.MinificationFailed;
+                    }
+                }
+            }
+
+            return _loadedAssets;
         }
 
         private static string Process(String content)
@@ -51,7 +70,13 @@ namespace SixPack.Minifiers.BetterMinifyJS
 
             if (minifier.ErrorList.Count > 0)
             {
-                _result = GenerateErrorResponse(content, minifier.ErrorList);
+                StringBuilder _errorList = new StringBuilder("Errors encountered during minification: " + System.Environment.NewLine);
+                foreach (object error in minifier.ErrorList)
+                {
+                    _errorList.Append(error.ToString()).Append(System.Environment.NewLine);
+                }
+                
+                throw new MinificationException(_errorList.ToString());
             }
             else
             {
@@ -59,20 +84,6 @@ namespace SixPack.Minifiers.BetterMinifyJS
             }
 
             return _result;
-        }
-
-        private static string GenerateErrorResponse(string content, IEnumerable<object> errors)
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("/* ");
-            stringBuilder.Append("Minification Error").Append("\r\n");
-            foreach (object current in errors)
-            {
-                stringBuilder.Append(current.ToString()).Append("\r\n");
-            }
-            stringBuilder.Append(" */\r\n");
-            stringBuilder.Append(content);
-            return stringBuilder.ToString();
         }
     }
 }

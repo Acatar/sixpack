@@ -6,8 +6,9 @@ using SixPack.Consumers;
 using SixPack.Locale;
 using SixPack.MemoryCacheProvider;
 using SixPack.Minifiers;
+using SixPack.Minifiers.BetterMinifyJS;
 
-namespace SixPack.Tests
+namespace SixPack.Tests.BetterMinifyJS
 {
     [TestClass]
     public class Startup
@@ -19,7 +20,7 @@ namespace SixPack.Tests
 
             _container.Register<ISixPack, SixPack>();
             _container.Register<IConsumer, Consumer>();
-            _container.Register<IMinifier, BundleOnlyMinifier>();
+            _container.Register<IMinifier, BetterMinifier>();
             _container.Register<ILocale, Locale_En>();
             _container.Register<ICacheProvider, MemoryCacheProviderImplementation>();
 

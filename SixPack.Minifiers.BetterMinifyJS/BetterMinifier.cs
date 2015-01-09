@@ -12,6 +12,7 @@ namespace SixPack.Minifiers.BetterMinifyJS
     public sealed class BetterMinifier : IMinifier
     {
         protected static IConsumer _consumer;
+        protected static Minifier _minifier;
 
         public BetterMinifier(IConsumer consumer)
         {
@@ -20,6 +21,8 @@ namespace SixPack.Minifiers.BetterMinifyJS
                 throw new ArgumentException("The consumer parameter that implements IConsumer is required.", "consumer");
 
             _consumer = consumer;
+
+            _minifier = new Minifier();
         }
 
         public async Task<IEnumerable<Asset>> Minify(IEnumerable<Asset> assets)
@@ -60,18 +63,17 @@ namespace SixPack.Minifiers.BetterMinifyJS
                 throw new ArgumentNullException("content");
             }
 
-            Minifier minifier = new Minifier();
             string _result;
-            string _minified = minifier.MinifyJavaScript(content, new CodeSettings
+            string _minified = _minifier.MinifyJavaScript(content, new CodeSettings
             {
                 EvalTreatment = EvalTreatment.MakeImmediateSafe,
                 PreserveImportantComments = false
             });
 
-            if (minifier.ErrorList.Count > 0)
+            if (_minifier.ErrorList.Count > 0)
             {
                 StringBuilder _errorList = new StringBuilder("Errors encountered during minification: " + System.Environment.NewLine);
-                foreach (object error in minifier.ErrorList)
+                foreach (object error in _minifier.ErrorList)
                 {
                     _errorList.Append(error.ToString()).Append(System.Environment.NewLine);
                 }
